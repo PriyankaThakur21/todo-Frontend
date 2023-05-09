@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>todoist</title>
+</head>
+<body>
+    <div id="container">
+    <h1>Todo List</h1>
+    <form onsubmit="savedata(event)">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description">
+        <input type="submit" value="Add">
+        <br>
+        <br>
+    </form>
+</div>
+<div id="container1">
+    <h3>Todo</h3>
+</div>
+<div id="container2">
+    <h3>Done</h3>
+</div>
+<script src="todo.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+</body>
+</html>
