@@ -1,15 +1,19 @@
-function savedata(event){
+async function savedata(event){
     event.preventDefault()
     const name=event.target.name.value;
     const des=event.target.description.value;
     const isdone = 'false';
-    const obj={name, des, isdone}
-    axios.post('https://crudcrud.com/api/029a11f671ad40e3afa48aed0da07647/todo',obj)
-    .then((resolve)=>todolist(resolve.data))
-    .catch((err)=>console.log(err))
+    const obj={name, des, isdone};
+    try{
+    const post=await axios.post('https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo',obj)
+    todolist(post.data);
+    }
+    catch(err){
+    console.log(err)
+    }
     event.target.reset();
 }
-function todolist(obj){
+    function todolist(obj){
     const parent=document.getElementById('container1')
     const list=document.createElement('li')
     list.id=obj._id
@@ -25,33 +29,41 @@ function todolist(obj){
     list.appendChild(btn2)
     parent.appendChild(list)
 }
-function deletedata(todoid){
-    axios.delete(`https://crudcrud.com/api/029a11f671ad40e3afa48aed0da07647/todo/${todoid}`)
-    .then((resolve)=>removefromtodo(todoid))
-    .catch((err)=>console.log(err))
+async function deletedata(todoid){
+    try{
+    const dltdata=await axios.delete(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${todoid}`);
+    console.log(dltdata)
+    removefromtodo(todoid);
+    }
+    catch(err){
+        console.log(err);
+    }
 }
 function removefromtodo(todoid){
     const parent=document.getElementById('container1')
     const child=document.getElementById(todoid)
     parent.removeChild(child)
 }
-function addtodone(obj){
-    axios.put(`https://crudcrud.com/api/029a11f671ad40e3afa48aed0da07647/todo/${obj._id}`,
+async function addtodone(obj){
+    try{
+    const a=await axios.put(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`,
     {
         name:`${obj.name}`,
         des:`${obj.des}`,
         isdone:`${(obj.isdone=true)}`
     })
-    .then((resolve)=>{
-        console.log(resolve);
-    })
-    .catch((err)=>console.log(err))
-    axios.get(`https://crudcrud.com/api/029a11f671ad40e3afa48aed0da07647/todo/${obj._id}`)
-        .then((resolve)=>{
+    }
+    catch(err){
+    console.log(err);
+    }
+    try{
+    const b=await axios.get(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`)
             done(obj)
             removefromtodo(obj._id)
-        })
-        .catch((err)=>console.log(err))
+        }
+        catch{
+        console.log(err)
+        }
 }
 function done(object){
     const parent=document.getElementById('container2')
@@ -60,7 +72,7 @@ function done(object){
     parent.appendChild(list)
 }
 window.addEventListener("DOMContentLoaded", ()=>{
-    axios.get('https://crudcrud.com/api/029a11f671ad40e3afa48aed0da07647/todo')
+    axios.get('https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo')
     .then((resolve)=>{
         for(let i=0; i<resolve.data.length; i++){
             if(resolve.data[i].isdone==='true'){
