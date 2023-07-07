@@ -5,7 +5,7 @@ async function savedata(event){
     const isdone = 'false';
     const obj={name, des, isdone};
     try{
-    const post=await axios.post('https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo',obj)
+    const post=await axios.post('http://localhost:3000/addtodo',obj)
     todolist(post.data);
     }
     catch(err){
@@ -31,7 +31,7 @@ async function savedata(event){
 }
 async function deletedata(todoid){
     try{
-    const dltdata=await axios.delete(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${todoid}`);
+    const dltdata=await axios.delete(`http://localhost:3000/addtodo/${todoid}`);
     console.log(dltdata)
     removefromtodo(todoid);
     }
@@ -44,27 +44,27 @@ function removefromtodo(todoid){
     const child=document.getElementById(todoid)
     parent.removeChild(child)
 }
-async function addtodone(obj){
-    try{
-    const a=await axios.put(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`,
-    {
-        name:`${obj.name}`,
-        des:`${obj.des}`,
-        isdone:`${(obj.isdone=true)}`
-    })
-    }
-    catch(err){
-    console.log(err);
-    }
-    try{
-    const b=await axios.get(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`)
-            done(obj)
-            removefromtodo(obj._id)
-        }
-        catch{
-        console.log(err)
-        }
-}
+// async function addtodone(obj){
+//     try{
+//     const a=await axios.put(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`,
+//     {
+//         name:`${obj.name}`,
+//         des:`${obj.des}`,
+//         isdone:`${(obj.isdone=true)}`
+//     })
+//     }
+//     catch(err){
+//     console.log(err);
+//     }
+//     try{
+//     const b=await axios.get(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`)
+//             done(obj)
+//             removefromtodo(obj._id)
+//         }
+//         catch{
+//         console.log(err)
+//         }
+// }
 function done(object){
     const parent=document.getElementById('container2')
     const list=document.createElement('li')
@@ -72,7 +72,7 @@ function done(object){
     parent.appendChild(list)
 }
 window.addEventListener("DOMContentLoaded", ()=>{
-    axios.get('https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo')
+    axios.get('http://localhost:3000/gettodo')
     .then((resolve)=>{
         for(let i=0; i<resolve.data.length; i++){
             if(resolve.data[i].isdone==='true'){
