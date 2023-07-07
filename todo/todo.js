@@ -1,11 +1,14 @@
 async function savedata(event){
     event.preventDefault()
     const name=event.target.name.value;
-    const des=event.target.description.value;
-    const isdone = 'false';
-    const obj={name, des, isdone};
+    const description=event.target.description.value;
+    const obj={name, description};
+    console.log(obj)
+    const token = localStorage.getItem('token');
+    console.log(token);
     try{
-    const post=await axios.post('http://localhost:3000/addtodo',obj)
+    const post=await axios.post(`http://localhost:3000/addtodo/${token}`,obj)
+    console.log(post.data)
     todolist(post.data);
     }
     catch(err){
@@ -17,7 +20,7 @@ async function savedata(event){
     const parent=document.getElementById('container1')
     const list=document.createElement('li')
     list.id=obj._id
-    list.textContent+=obj.name+'->'+obj.des+' ';
+    list.textContent+=obj.name+'->'+obj.description+' ';
     const btn1=document.createElement('button')
     btn1.innerHTML='<i class = "fa fa-check"></i>'
     btn1.style.margin='20px'
@@ -68,12 +71,15 @@ function removefromtodo(todoid){
 function done(object){
     const parent=document.getElementById('container2')
     const list=document.createElement('li')
-    list.textContent+=object.name+'->'+object.des+' ';
+    list.textContent+=object.name+'->'+object.description+' ';
     parent.appendChild(list)
 }
+
 window.addEventListener("DOMContentLoaded", ()=>{
-    axios.get('http://localhost:3000/gettodo')
+    const token = localStorage.getItem('token');
+    axios.get(`http://localhost:3000/gettodo/${token}`)
     .then((resolve)=>{
+        console.log(resolve.data)
         for(let i=0; i<resolve.data.length; i++){
             if(resolve.data[i].isdone==='true'){
                 done(resolve.data[i])
