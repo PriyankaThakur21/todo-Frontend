@@ -9,7 +9,7 @@ async function savedata(event){
     try{
     const post=await axios.post(`http://localhost:3000/addtodo/${token}`,obj)
     console.log(post.data)
-    todolist(post.data);
+    todolist(obj);
     }
     catch(err){
     console.log(err)
@@ -34,8 +34,8 @@ async function savedata(event){
 }
 async function deletedata(todoid){
     try{
-    const dltdata=await axios.delete(`http://localhost:3000/addtodo/${todoid}`);
-    console.log(dltdata)
+    const dltdata=await axios.delete(`http://localhost:3000/deletetodo/${todoid}`);
+    console.log(dltdata);
     removefromtodo(todoid);
     }
     catch(err){
@@ -47,27 +47,18 @@ function removefromtodo(todoid){
     const child=document.getElementById(todoid)
     parent.removeChild(child)
 }
-// async function addtodone(obj){
-//     try{
-//     const a=await axios.put(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`,
-//     {
-//         name:`${obj.name}`,
-//         des:`${obj.des}`,
-//         isdone:`${(obj.isdone=true)}`
-//     })
-//     }
-//     catch(err){
-//     console.log(err);
-//     }
-//     try{
-//     const b=await axios.get(`https://crudcrud.com/api/276bdb7d535b433a9f605648236d180d/todo/${obj._id}`)
-//             done(obj)
-//             removefromtodo(obj._id)
-//         }
-//         catch{
-//         console.log(err)
-//         }
-// }
+async function addtodone(obj){
+    try{
+    const a=await axios.get(`http://localhost:3000/updatetodo/${obj._id}`);
+    console.log(a);
+    done(obj)
+    removefromtodo(obj._id)
+    }
+    catch(err){
+    console.log(err);
+}
+}
+
 function done(object){
     const parent=document.getElementById('container2')
     const list=document.createElement('li')
@@ -81,7 +72,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
     .then((resolve)=>{
         console.log(resolve.data)
         for(let i=0; i<resolve.data.length; i++){
-            if(resolve.data[i].isdone==='true'){
+            if(resolve.data[i].isDone===true){
                 done(resolve.data[i])
             }
             else{
